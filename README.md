@@ -19,8 +19,8 @@ This is a starting point for Go solutions to the
 
 ``` sh
 docker build -t my_docker .
-docker run --cap-add="CAP_SYS_ADMIN" my_docker \
-run codecraftersio/docker-challenge /usr/bin/echo hey
+docker run --cap-add="SYS_ADMIN" my_docker \
+run codecraftersio/docker-challenge /usr/bin/docker-explorer echo hey
 ```
    
 # Passing the first stage
