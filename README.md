@@ -14,6 +14,14 @@ This is a starting point for Go solutions to the
 1. Once you pass a stage, increment the `current_stage` value in
    `.codecrafters.yml`, and run `git push origin master` to advance to the next
    stage.
+
+# Running your program locally
+
+``` sh
+docker build -t my_docker .
+docker run --cap-add="CAP_SYS_ADMIN" my_docker \
+run codecraftersio/docker-challenge /usr/bin/echo hey
+```
    
 # Passing the first stage
 
