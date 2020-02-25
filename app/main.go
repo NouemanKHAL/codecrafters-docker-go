@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 func main() {
 	fmt.Println("Implement your program here")
 
