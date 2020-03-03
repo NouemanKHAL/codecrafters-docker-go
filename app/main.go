@@ -16,7 +16,6 @@ func main() {
 	// cmd := exec.Command(command, args...)
 	// cmd.Stdout = os.Stdout
 	// cmd.Stderr = os.Stderr
-	// err := cmd.Run()
 	//
 	// if err := cmd.Run(); err != nil {
 	// 	if _, ok := err.(*exec.ExitError); ok {
