@@ -7,8 +7,10 @@ This is a starting point for Go solutions to the
 # Usage
 
 1. Ensure you have `go` installed locally
-1. Run `./your_docker.sh` to run your Docker implementation, which is implemented in
-   `app/main.go`.
+1. Download [`docker-explorer`], as [mentioned
+   here](https://github.com/codecrafters-io/docker-explorer).
+1. Follow the details below ("Running your program locally") to run your Docker
+   implementation, which is implemented in `app/main.go`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
 
@@ -16,7 +18,7 @@ This is a starting point for Go solutions to the
 
 ``` sh
 docker build -t my_docker .
-docker run --cap-add="SYS_ADMIN" my_docker run some_image /usr/local/bin/docker-explorer
+docker run --cap-add="SYS_ADMIN" my_docker run some_image /usr/local/bin/docker-explorer echo hey
 ```
    
 # Passing the first stage
@@ -29,7 +31,7 @@ git commit --allow-empty -m "Running tests"
 git push origin master
 ```
 
-Go to `app/server.go` and uncomment the fork/exec implementation. Commit and
+Go to `app/main.go` and uncomment the fork/exec implementation. Commit and
 push your changes, and you'll now see the first stage pass.
 
 Time to move on to the next stage!
