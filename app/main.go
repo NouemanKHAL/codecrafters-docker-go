@@ -18,10 +18,11 @@ func main() {
 	// cmd.Stderr = os.Stderr
 	// err := cmd.Run()
 	//
-	// if err != nil {
-	// 	fmt.Printf("Error in waiting on process: %v\n", err)
+	// if err := cmd.Run(); err != nil {
+	// 	if _, ok := err.(*exec.ExitError); ok {
+	// 		os.Exit(cmd.ProcessState.ExitCode())
+	// 	}
+	// 	fmt.Printf("Err: %v", err)
 	// 	os.Exit(1)
 	// }
-	//
-	// os.Exit(cmd.ProcessState.ExitCode())
 }
