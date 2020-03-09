@@ -16,11 +16,16 @@ This is a starting point for Go solutions to the
 
 # Running your program locally
 
+Since you'll need to use linux-specific syscalls in this challenge, we'll run
+your code _inside_ a docker container.
+
 ``` sh
 docker build -t my_docker .
 docker run --cap-add="SYS_ADMIN" my_docker run some_image /usr/local/bin/docker-explorer echo hey
 ```
-   
+
+(remember to re-run `docker build` each time you make changes to your code!)
+
 # Passing the first stage
 
 CodeCrafters runs tests when you do a `git push`. Make an empty commit and push
@@ -31,7 +36,7 @@ git commit --allow-empty -m "Running tests"
 git push origin master
 ```
 
-Go to `app/main.go` and uncomment the fork/exec implementation. Commit and
-push your changes, and you'll now see the first stage pass.
+Go to `app/main.go` and uncomment the implementation. Commit and push your
+changes, and you'll now see the first stage pass.
 
 Time to move on to the next stage!
