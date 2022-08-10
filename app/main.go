@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
 )
@@ -13,30 +12,12 @@ func main() {
 	args := os.Args[4:len(os.Args)]
 
 	cmd := exec.Command(command, args...)
-	stdout, err := cmd.StdoutPipe()
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		fmt.Printf("Err: %v", err)
-		os.Exit(1)
-	}
-	stderr, err := cmd.StderrPipe()
-	if err != nil {
-		fmt.Printf("Err: %v", err)
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	if err = cmd.Start(); err != nil {
-		fmt.Printf("Err: %v", err)
-		os.Exit(1)
-	}
-
-	out, _ := io.ReadAll(stdout)
-	er, _ := io.ReadAll(stderr)
-
-	if len(out) > 0 {
-		fmt.Print(string(out))
-	}
-	if len(er) > 0 {
-		fmt.Print(string(er))
-	}
-
+	fmt.Print(output)
 }
