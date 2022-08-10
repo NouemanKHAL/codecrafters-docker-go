@@ -32,6 +32,11 @@ func main() {
 	out, _ := io.ReadAll(stdout)
 	er, _ := io.ReadAll(stderr)
 
-	fmt.Println(string(out))
-	fmt.Println(string(er))
+	if len(out) > 0 {
+		fmt.Println(string(out))
+	}
+	if len(er) > 0 {
+		fmt.Println(string(er))
+	}
+
 }
