@@ -12,12 +12,11 @@ func main() {
 	args := os.Args[4:len(os.Args)]
 
 	cmd := exec.Command(command, args...)
+	cmd.Stdin = os.Stdin
+	cmd.Stderr = os.Stderr
 
-	output, err := cmd.CombinedOutput()
-	if err != nil {
+	if err := cmd.Run(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-
-	fmt.Print(string(output))
 }
