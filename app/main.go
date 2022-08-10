@@ -15,8 +15,9 @@ func main() {
 	cmd.Stdin = os.Stdin
 	cmd.Stderr = os.Stderr
 
-	if err := cmd.Run(); err != nil {
-		fmt.Println(err)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("Err: %v", err)
 		os.Exit(1)
 	}
 }
