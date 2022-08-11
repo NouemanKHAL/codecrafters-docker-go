@@ -2,13 +2,17 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"os/exec"
 	"syscall"
+	"time"
 )
 
 // Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 func main() {
+	rand.Seed(time.Now().UnixNano())
+
 	command := os.Args[3]
 	args := os.Args[4:len(os.Args)]
 
@@ -16,8 +20,8 @@ func main() {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
-	container_dir := "mycontainer"
-	err := os.Mkdir("mycontainer", 0750)
+	container_dir := "mycontainer" + fmt.Sprintf("%d", rand.Int())
+	err := os.Mkdir(container_dir, 0750)
 	if err != nil {
 		fmt.Printf("Err: %v", err)
 		os.Exit(1)
