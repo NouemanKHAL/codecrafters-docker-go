@@ -31,12 +31,12 @@ func createContainer(path string) error {
 	}
 
 	cmd := exec.Cmd{
-		Path:   "/bin/bash",
+		Path:   "/bin/sh",
 		Stdin:  os.Stdin,
 		Stdout: os.Stdout,
 		Stderr: os.Stderr,
 		SysProcAttr: &syscall.SysProcAttr{
-			Cloneflags: syscall.CLONE_NEWPID,
+			Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID,
 		},
 	}
 
