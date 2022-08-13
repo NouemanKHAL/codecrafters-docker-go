@@ -30,21 +30,6 @@ func createContainer(path string) error {
 		return err
 	}
 
-	cmd := exec.Cmd{
-		Path:   "/bin/sh",
-		Stdin:  os.Stdin,
-		Stdout: os.Stdout,
-		Stderr: os.Stderr,
-		SysProcAttr: &syscall.SysProcAttr{
-			Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID,
-		},
-	}
-
-	err = cmd.Run()
-	if err != nil {
-		return err
-	}
-
 	err = syscall.Chroot(container_path)
 	if err != nil {
 		return nil
@@ -60,16 +45,18 @@ func main() {
 	command := os.Args[3]
 	args := os.Args[4:len(os.Args)]
 
-	cmd := exec.Command(command, args...)
-
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
 	err := createContainer(".")
 	if err != nil {
 		fmt.Printf("error creating a container: %v", err)
 		os.Exit(1)
 	}
+
+	cmd := exec.Command(command, args...)
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID,
+	}
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 
 	err = cmd.Run()
 	if e, ok := err.(*exec.ExitError); ok {
