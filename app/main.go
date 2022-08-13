@@ -30,6 +30,21 @@ func createContainer(path string) error {
 		return err
 	}
 
+	cmd := exec.Cmd{
+		Path:   "/bin/bash",
+		Stdin:  os.Stdin,
+		Stdout: os.Stdout,
+		Stderr: os.Stderr,
+		SysProcAttr: &syscall.SysProcAttr{
+			Cloneflags: syscall.CLONE_NEWPID,
+		},
+	}
+
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+
 	err = syscall.Chroot(container_path)
 	if err != nil {
 		return nil
@@ -46,6 +61,7 @@ func main() {
 	args := os.Args[4:len(os.Args)]
 
 	cmd := exec.Command(command, args...)
+
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
