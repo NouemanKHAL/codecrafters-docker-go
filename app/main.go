@@ -7,7 +7,36 @@ import (
 	"os/exec"
 	"syscall"
 	"time"
+
+	"codecrafters-docker-go/app/util"
+
+	"github.com/google/uuid"
 )
+
+const docker_explorer_path = "/usr/local/bin/docker-explorer"
+
+func createContainer(path string) error {
+	container_id := uuid.New()
+	container_path := util.JoinPath(path, container_id.String())
+
+	err := os.Mkdir(container_path, 0750)
+	if err != nil {
+		return err
+	}
+
+	container_docker_explorer := util.JoinPath(container_path, docker_explorer_path)
+	err = util.CopyFile(docker_explorer_path, container_docker_explorer)
+	if err != nil {
+		return err
+	}
+
+	err = syscall.Chroot(container_path)
+	if err != nil {
+		return nil
+	}
+	_, err = util.CreateFile("/dev/null")
+	return err
+}
 
 // Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 func main() {
@@ -20,46 +49,17 @@ func main() {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
-	container_dir := "mycontainer" + fmt.Sprintf("%d", rand.Int())
-	err := os.Mkdir(container_dir, 0750)
+	err := createContainer(".")
 	if err != nil {
-		fmt.Printf("Err: %v", err)
+		fmt.Printf("error creating a container: %v", err)
 		os.Exit(1)
 	}
-
-	mkdirCommand := exec.Command("mkdir", "-p", container_dir+"/usr/local/bin")
-	err = mkdirCommand.Run()
-	if err != nil {
-		fmt.Printf("Err: %v", err)
-		os.Exit(1)
-	}
-
-	src := "/usr/local/bin/docker-explorer"
-	dst := container_dir + "/usr/local/bin/"
-
-	copyCommand := exec.Command("cp", src, dst)
-	err = copyCommand.Run()
-	if err != nil {
-		fmt.Printf("Err: %v", err)
-		os.Exit(1)
-	}
-
-	err = syscall.Chroot(container_dir)
-	if err != nil {
-		fmt.Printf("Err: %v", err)
-		os.Exit(1)
-	}
-
-	os.MkdirAll("/dev", 0750)
-	os.Open("/dev/null")
-	os.Chdir("/dev")
-	os.Create("null")
 
 	err = cmd.Run()
 	if e, ok := err.(*exec.ExitError); ok {
 		os.Exit(e.ExitCode())
 	} else if err != nil {
-		fmt.Printf("Err: %v", err)
+		fmt.Printf("error while running command '%s': %v", cmd.String(), err)
 		os.Exit(1)
 	}
 }
