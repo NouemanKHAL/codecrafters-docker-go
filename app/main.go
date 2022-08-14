@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"os"
 	"os/exec"
 	"syscall"
-	"time"
 
 	"codecrafters-docker-go/app/util"
 
@@ -40,8 +38,6 @@ func createContainer(path string) error {
 
 // Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 func main() {
-	rand.Seed(time.Now().UnixNano())
-
 	command := os.Args[3]
 	args := os.Args[4:len(os.Args)]
 
