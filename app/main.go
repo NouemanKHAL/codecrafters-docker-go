@@ -87,9 +87,16 @@ func createContainer(path, image, tag string) error {
 
 // Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 func main() {
-	parts := strings.Split(os.Args[2], ":")
-	image := parts[0]
-	tag := parts[1]
+	imageArg := os.Args[2]
+	var image, tag string
+	if strings.Contains(imageArg, ":") {
+		parts := strings.Split(os.Args[2], ":")
+		image = parts[0]
+		tag = parts[1]
+	} else {
+		image = imageArg
+		tag = "latest"
+	}
 
 	command := os.Args[3]
 	args := os.Args[4:len(os.Args)]
