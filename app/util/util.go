@@ -46,12 +46,19 @@ func CopyFile(src, dst string) error {
 }
 
 func CreateFile(path string) (*os.File, error) {
+	if path[0] != os.PathSeparator {
+		cwd, err := os.Getwd()
+		if err != nil {
+			return nil, err
+		}
+		path = JoinPath(cwd, path)
+	}
 	dirname := GetParentDir(path)
-	err := os.MkdirAll(dirname, 0750)
+	err := os.MkdirAll(dirname, 0666)
 	if err != nil {
 		return nil, err
 	}
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0750)
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0666)
 	return f, err
 }
 
